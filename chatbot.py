@@ -1,8 +1,9 @@
 import faiss
 import pickle
 from sentence_transformers import SentenceTransformer, util
-from transformers import pipeline
 from langdetect import detect
+from huggingface_hub import InferenceClient
+from transformers import pipeline
 import os
 
 # -----------------------------
@@ -34,8 +35,11 @@ def load_all():
     # Embedding model
     embedder = SentenceTransformer("all-MiniLM-L6-v2")
 
-    # RAG model
-    rag_model = pipeline("text2text-generation", model="google/flan-t5-base")
+    # RAG model via Hugging Face API
+    HF_API_TOKEN = os.environ.get("HF_API_TOKEN")
+    if HF_API_TOKEN is None:
+        raise ValueError("HF_API_TOKEN not set in environment variables")
+    rag_model = InferenceClient(HF_API_TOKEN)
 
     # Load FAQ
     def load_faq_from_txt(file_path):
@@ -54,8 +58,8 @@ def load_all():
                         question, answer = None, None
         return faq_dict
 
-    faq1_path = "faq1.txt"
-    faq2_path = "faq2.txt"
+    faq1_path = "customer_support_data/faq1.txt"
+    faq2_path = "customer_support_data/faq2.txt"
 
     faq = {}
     if os.path.exists(faq1_path):
@@ -120,7 +124,9 @@ Context:
 Question: {translated_query}
 Answer:
 """
-        response = rag_model(prompt, max_new_tokens=150, do_sample=False)[0]['generated_text'].strip()
+        # Use HF Inference API
+        hf_response = rag_model.text2text(prompt)
+        response = hf_response
         final_answer = response
         if detected_lang != "en":
             final_answer = from_english(response)[0]['translation_text']
