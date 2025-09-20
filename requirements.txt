@@ -1,8 +1,8 @@
-numpy==1.26.2
-sentence-transformers==2.2.2
-transformers==4.45.1
+numpy==1.26.4
+faiss-cpu==1.7.4
 torch==2.1.0
 torchvision==0.16.0
-flask==2.3.3
-gunicorn==20.1.0
-faiss-cpu==1.7.4
+transformers==4.45.1
+sentence-transformers==2.2.2
+flask
+gunicorn
