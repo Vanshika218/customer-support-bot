@@ -5,3 +5,4 @@ langdetect
 huggingface-hub
 flask
 gunicorn
+Flask-SQLAlchemy==3.0.5
