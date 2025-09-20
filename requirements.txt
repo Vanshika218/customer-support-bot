@@ -4,7 +4,7 @@ faiss-cpu==1.7.4
 torch==2.1.0
 torchvision==0.16.0
 transformers==4.30.2
-tokenizers==0.13.3
+# Remove fixed tokenizers version to avoid conflict
 sentence-transformers==2.2.2
 flask==2.3.3
 Flask-SQLAlchemy==3.0.5
