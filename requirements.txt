@@ -1,7 +1,7 @@
 sentence-transformers==2.2.2
 transformers==4.45.1
-# tokenizers==0.13.3   <-- remove this line
 torch==2.1.0
 torchvision==0.16.0
 flask==2.3.3
 gunicorn==20.1.0
+faiss-cpu==1.7.4
