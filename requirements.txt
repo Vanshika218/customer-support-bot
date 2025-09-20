@@ -8,4 +8,7 @@ tokenizers==0.13.3
 sentence-transformers==2.2.2
 flask==2.3.3
 gunicorn==20.1.0
-langchain==0.0.240
+langchain==0.2.11
+langchain-core==0.2.11
+langchain-community==0.2.11
+langchain-text-splitters==0.2.0
