@@ -5,7 +5,4 @@ faiss-cpu==1.12.0
 numpy
 requests
 gunicorn
-transformers
-huggingface-hub
-langchain
-langdetect
+huggingface_hub==0.13.4
