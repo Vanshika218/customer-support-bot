@@ -1,0 +1,7 @@
+faiss-cpu
+sentence-transformers
+transformers
+langdetect
+huggingface-hub
+flask
+gunicorn
