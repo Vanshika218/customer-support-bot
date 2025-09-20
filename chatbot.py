@@ -27,15 +27,15 @@ from_english = pipeline("translation", model="Helsinki-NLP/opus-mt-en-mul")
 def load_all():
     global index, chunks, embedder, rag_model, faq, faq_keys, faq_embeddings
 
-    # Load FAISS index
+    # FAISS index
     index = faiss.read_index("faiss_index.bin")
     with open("chunks.pkl", "rb") as f:
         chunks = pickle.load(f)
 
     # Embedding model
-    embedder = SentenceTransformer("all-MiniLM-L6-v2")
+    embedder = SentenceTransformer("sentence-transformers/paraphrase-MiniLM-L6-v2")
 
-    # RAG model via Hugging Face API
+    # RAG model via HF API
     HF_API_TOKEN = os.environ.get("HF_API_TOKEN")
     if HF_API_TOKEN is None:
         raise ValueError("HF_API_TOKEN not set in environment variables")
@@ -107,7 +107,7 @@ def get_chatbot_response(query):
             return final_answer
 
     # FAISS retrieval
-    query_vec = embedder.encode([translated_query])
+    query_vec = embedder.encode([translated_query]).astype("float32")
     D, I = index.search(query_vec, 5)
     if len(I[0]) > 0 and I[0][0] != -1:
         retrieved_texts = [chunks[idx] for idx in I[0] if idx != -1]
@@ -124,7 +124,6 @@ Context:
 Question: {translated_query}
 Answer:
 """
-        # Use HF Inference API
         hf_response = rag_model.text2text(prompt)
         response = hf_response
         final_answer = response
