@@ -1,0 +1,4 @@
+If your device won’t turn on:
+1. Check the power cable.
+2. Hold the power button for 10 seconds.
+3. If still not working, reset by pressing the reset button near the charging port.

@@ -1,0 +1,54 @@
+User: how to reach you
+Bot: [33m❓ How can I contact customer support?
+[32m💡 You can email us at support@company.com or call 1-800-123-4567.
+
+[32m- If your device won’t turn on:
+1. Check the power cable.
+2. Hold the power button for 10 seconds.
+3. If still not working, reset by pressing the reset button near the charging port.
+
+User: cusmr sprt
+Bot: [33m❓ How do I reset my password?
+[32m💡 Go to Settings > Security > Reset Password.
+
+[33m❓ How can I contact customer support?
+[32m💡 You can email us at support@company.com or call 1-800-123-4567.
+
+User: rest paswrd
+Bot: [33m❓ How do I reset my password?
+[32m💡 Go to Settings > Security > Reset Password.
+
+[33m❓ How can I contact customer support?
+[32m💡 You can email us at support@company.com or call 1-800-123-4567.
+
+User: ur nme
+Bot: [33m❓ How do I reset my password?
+[32m💡 Go to Settings > Security > Reset Password.
+
+[32m- If your device won’t turn on:
+1. Check the power cable.
+2. Hold the power button for 10 seconds.
+3. If still not working, reset by pressing the reset button near the charging port.
+
+User: ur name
+Bot: [33m❓ How can I contact customer support?
+[32m💡 You can email us at support@company.com or call 1-800-123-4567.
+
+User: cstmer cntct
+Bot: [33m❓ How can I contact customer support?
+[32m💡 You can email us at support@company.com or call 1-800-123-4567.
+
+User: whoa re you
+Bot: [32m- If your device won’t turn on:
+1. Check the power cable.
+2. Hold the power button for 10 seconds.
+3. If still not working, reset by pressing the reset button near the charging port.
+
+User: bye bye
+Bot: [33m❓ How do I reset my password?
+[32m💡 Go to Settings > Security > Reset Password.
+
+User: exit now 
+Bot: [33m❓ How can I contact customer support?
+[32m💡 You can email us at support@company.com or call 1-800-123-4567.
+

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Customer Support Bot</title>
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+  />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    .navbar {
+      background: rgba(0, 0, 0, 0.4);
+      color: white;
+      padding: 15px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      flex-wrap: wrap;
+    }
+
+    .navbar .buttons a {
+      color: white;
+      margin-left: 12px;
+      text-decoration: none;
+      padding: 6px 14px;
+      border: 1px solid white;
+      border-radius: 25px;
+      transition: 0.3s;
+    }
+
+    .navbar .buttons a:hover {
+      background: white;
+      color: #333;
+    }
+
+    .welcome-section {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .welcome-message {
+      font-size: 36px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .welcome-subtext {
+      font-size: 18px;
+      font-style: italic;
+      font-weight: 300;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .last-subtext {
+      margin-bottom: 30px;
+    }
+
+    .chatbot-image {
+      width: 150px;
+      height: 150px;
+      animation: bounce 2s infinite alternate;
+    }
+
+    @keyframes bounce {
+      0% {
+        transform: translateY(0) rotate(-5deg);
+      }
+      50% {
+        transform: translateY(-15px) rotate(5deg);
+      }
+      100% {
+        transform: translateY(0) rotate(-5deg);
+      }
+    }
+
+    #chatbot-toggle {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: #3498db;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1000;
+    }
+
+    #chatbot-toggle:hover {
+      background: #2980b9;
+    }
+
+    #chatbot-toggle img {
+      width: 100px;
+      height: 100px;
+    }
+
+    .chat-widget {
+      position: fixed;
+      bottom: 100px;
+      right: 30px;
+      width: 600px;
+      height: 700px;
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.25);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 1000;
+      display: none;
+    }
+
+    .chat-header {
+      background: linear-gradient(90deg, #3498db, #8e44ad);
+      color: white;
+      padding: 12px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+    }
+
+    .chat-input {
+      display: flex;
+      border-top: 1px solid #ddd;
+      align-items: center;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 15px;
+      border: none;
+      outline: none;
+      font-size: 18px;
+    }
+
+    .chat-input input::placeholder {
+      font-size: 18px;
+      color: #999;
+      opacity: 1;
+    }
+
+    .chat-input button {
+      padding: 10px 15px;
+      background: #3498db;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      margin-left: 5px;
+      border-radius: 4px;
+      font-size: 16px;
+      height: 48px;
+      min-width: 80px;
+    }
+
+    #voice-btn {
+      background: #1abc9c;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: 600;
+      margin-left: 5px;
+      border-radius: 4px;
+      font-size: 16px;
+      transition: background-color 0.3s;
+      height: 48px;
+      min-width: 80px;
+    }
+
+    #voice-btn:hover {
+      background: #16a085;
+    }
+
+    #voice-btn.recording {
+      background: #e74c3c;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 5px #e74c3c; }
+      50% { box-shadow: 0 0 15px #e74c3c; }
+      100% { box-shadow: 0 0 5px #e74c3c; }
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .navbar .buttons {
+        width: 100%;
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
+
+      .navbar .buttons a {
+        margin: 6px 4px;
+        padding: 8px 16px;
+        font-size: 14px;
+      }
+
+      .welcome-message {
+        font-size: 26px;
+      }
+
+      .welcome-subtext {
+        font-size: 14px;
+      }
+
+      .chatbot-image {
+        width: 100px;
+        height: 100px;
+      }
+
+      #chatbot-toggle {
+        width: 50px;
+        height: 50px;
+      }
+
+      #chatbot-toggle img {
+        width: 24px;
+        height: 24px;
+      }
+
+      .chat-widget {
+        width: 90vw;
+        height: 70vh;
+        bottom: 90px;
+        right: 5vw;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div>Customer Support</div>
+    <div class="buttons">
+      <a href="/login">Login</a>
+      <a href="/signup">Signup</a>
+      <a href="/history">History</a>
+    </div>
+  </div>
+
+  <div class="welcome-section">
+    <div class="welcome-message">Welcome! 👋 How can I help you today?💊</div>
+    <div class="welcome-subtext">Your Health Companion, Available 24/7</div>
+    <div class="welcome-subtext last-subtext">👇🏻Click the chat button at the bottom-right to start chatting!</div>
+    <img src="{{ url_for('static', filename='chatbot.png') }}" alt="Chatbot" class="chatbot-image" />
+  </div>
+
+  <div id="chatbot-toggle">
+    <img src="{{ url_for('static', filename='toggle-icon.png') }}" alt="Chat Toggle" />
+  </div>
+
+  <div class="chat-widget" id="chat-widget">
+    <div class="chat-header"><span>MedShop Assistant</span></div>
+    <div class="chat-messages" id="chat-messages"></div>
+    <div class="chat-input">
+      <input type="text" id="user-input" placeholder="Type your message..." />
+      <button id="voice-btn" title="Speak" aria-label="Speak">🎤</button>
+      <button id="send-btn" onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const chatbotToggle = document.getElementById('chatbot-toggle');
+    const chatWidget = document.getElementById('chat-widget');
+
+    chatbotToggle.addEventListener('click', () => {
+      chatWidget.style.display = chatWidget.style.display === 'flex' ? 'none' : 'flex';
+    });
+
+    const chatBox = document.getElementById('chat-messages');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+    const voiceBtn = document.getElementById('voice-btn');
+
+    function renderMessage(sender, message) {
+      chatBox.innerHTML += `<div><b>${sender === 'user' ? 'You' : 'Bot'}:</b> ${message}</div>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    async function loadHistory() {
+      try {
+        const res = await fetch('/history');
+        if (!res.ok) return;
+        const history = await res.json();
+        history.forEach((msg) => renderMessage(msg.sender, msg.message));
+      } catch (err) {
+        console.error('Failed to load chat history:', err);
+      }
+    }
+
+    loadHistory();
+
+    async function sendMessage() {
+      const message = userInput.value.trim();
+      if (!message) return;
+
+      renderMessage('user', message);
+      userInput.value = '';
+
+      try {
+        const res = await fetch('/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message }),
+        });
+        const data = await res.json();
+        renderMessage('bot', data.response);
+        speakResponse(data.response);
+      } catch (err) {
+        console.error('Failed to send message:', err);
+      }
+    }
+
+    let recognition;
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SpeechRecognition();
+      recognition.lang = 'en-US';
+      recognition.interimResults = false;
+      recognition.maxAlternatives = 1;
+
+      recognition.addEventListener('start', () => {
+        voiceBtn.classList.add('recording');
+        voiceBtn.title = 'Listening... Click to stop.';
+      });
+
+      recognition.addEventListener('end', () => {
+        voiceBtn.classList.remove('recording');
+        voiceBtn.title = 'Speak';
+      });
+
+      recognition.addEventListener('result', (event) => {
+        const transcript = event.results[0][0].transcript;
+        userInput.value = transcript;
+        sendBtn.click();
+      });
+    } else {
+      voiceBtn.disabled = true;
+      voiceBtn.title = "Speech Recognition not supported in this browser";
+    }
+
+    voiceBtn.addEventListener('click', () => {
+      if (!recognition) return;
+      if (voiceBtn.classList.contains('recording')) {
+        recognition.stop();
+      } else {
+        recognition.start();
+      }
+    });
+
+    function speakResponse(text) {
+      if (!('speechSynthesis' in window)) return;
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'en-US';
+      utterance.rate = 1;
+      utterance.pitch = 1;
+      window.speechSynthesis.speak(utterance);
+    }
+  </script>
+</body>
+</html>
