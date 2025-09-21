@@ -1,50 +1,19 @@
-# Virtual environment
-venv/
-ENV/
-env/
-
 # Python cache
 __pycache__/
 *.pyc
-*.pyo
-*.pyd
 
-# Distribution / packaging
-build/
-dist/
-*.egg-info/
-*.egg
-.eggs/
+# Virtual environment
+venv/
 
 # Logs
-*.log
+chatbot_log.txt
 
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-.hypothesis/
+# Pickled / indexed data
+*.pkl
+*.bin
 
-# Flask / Django / web stuff
+# Flask instance folder
 instance/
-.webassets-cache
 
-# Environment variables
-.env
-.env.*
-.venv
-
-# IDEs and editors
-.vscode/
-.idea/
-*.sublime-project
-*.sublime-workspace
-
-# OS files
-.DS_Store
-Thumbs.db
+# Project data folder
+customer_support_data/
