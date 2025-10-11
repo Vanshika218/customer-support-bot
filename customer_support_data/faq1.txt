@@ -1,5 +1,3 @@
-I apologize for the repetitive questions in the previous response. I have removed the duplicates and compiled a comprehensive list of questions and answers for your chatbot dataset.
-
 Q: Hello
 A: Hi there! How can I help you today?
 

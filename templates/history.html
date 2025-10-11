@@ -1,71 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Your Chat History</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
-      margin: 0;
-      padding: 20px;
-      color: #333;
-    }
-    .container {
-      max-width: 700px;
-      margin: auto;
-      background: rgba(255,255,255,0.9);
-      padding: 25px;
-      border-radius: 15px;
-      box-shadow: 0px 4px 15px rgba(0,0,0,0.25);
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .entry {
-      background: #fff;
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 15px;
-      box-shadow: 0px 2px 8px rgba(0,0,0,0.1);
-    }
-    .user {
-      color: #2980b9;
-      font-weight: bold;
-    }
-    .bot {
-      color: #27ae60;
-      font-weight: bold;
-    }
-    a {
-      display: inline-block;
-      margin-top: 20px;
-      text-decoration: none;
-      background: #2980b9;
-      color: white;
-      padding: 10px 15px;
-      border-radius: 8px;
-      transition: 0.3s;
-    }
-    a:hover {
-      background: #1f6391;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Your Chat History</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
+<style>
+body{font-family:'Poppins',sans-serif;background:#f0f0f0;margin:0;padding:20px;}
+.container{max-width:700px;margin:auto;background:white;padding:25px;border-radius:15px;box-shadow:0 4px 15px rgba(0,0,0,0.25);}
+h2{text-align:center;margin-bottom:20px;}
+.chat-messages {
+  flex: 1;
+  padding: 10px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  max-width: 75%;
+  padding: 10px 15px;
+  margin: 5px;
+  border-radius: 15px;
+  display: inline-block;
+  position: relative;
+}
+
+.message.user {
+  background: #2980b9;
+  color: white;
+  align-self: flex-end; /* moves blue messages to the right */
+  border-bottom-right-radius: 0;
+}
+
+.message.bot {
+  background: #27ae60;
+  color: white;
+  align-self: flex-start; /* keeps green messages to the left */
+  border-bottom-left-radius: 0;
+}
+.timestamp{font-size:10px;color:#555;margin-top:2px;display:block;text-align:right;}
+.date-separator{text-align:center;font-size:12px;margin:10px 0;color:#888;}
+a{display:inline-block;margin-top:20px;text-decoration:none;background:#2980b9;color:white;padding:10px 15px;border-radius:8px;transition:0.3s;}
+a:hover{background:#1f6391;}
+</style>
 </head>
 <body>
-  <div class="container">
-    <h2>Your Chat History</h2>
-    {% for chat in history %}
-      <div class="entry">
-        <div class="user">You:</div>
-        <div>{{ chat.user_message }}</div>
-        <div class="bot">Bot:</div>
-        <div>{{ chat.bot_message }}</div>
-      </div>
-    {% endfor %}
-    <a href="{{ url_for('index') }}">⬅ Back to Home</a>
-  </div>
+<div class="container">
+<h2>Your Chat History</h2>
+{% set last_date = '' %}
+{% for chat in history %}
+  {% set msg_date = chat.timestamp.strftime('%Y-%m-%d') %}
+  {% if msg_date != last_date %}
+    <div class="date-separator">{{ chat.timestamp.strftime('%B %d, %Y') }}</div>
+    {% set last_date = msg_date %}
+  {% endif %}
+  {% if chat.message != '__welcome__' %}
+    <div class="message user">
+      <div>{{ chat.message }}</div>
+      <span class="timestamp">{{ chat.timestamp.strftime('%I:%M %p') }}</span>
+    </div>
+    <div class="message bot">
+      <div>{{ chat.response }}</div>
+      <span class="timestamp">{{ chat.timestamp.strftime('%I:%M %p') }}</span>
+    </div>
+  {% else %}
+    <div class="message bot">
+      <div>{{ chat.response }}</div>
+      <span class="timestamp">{{ chat.timestamp.strftime('%I:%M %p') }}</span>
+    </div>
+  {% endif %}
+{% endfor %}
+<a href="{{ url_for('index') }}">⬅ Back to Home</a>
+</div>
 </body>
 </html>

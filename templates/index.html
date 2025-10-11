@@ -1,398 +1,388 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Customer Support Bot</title>
-  <link
-    rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
-  />
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #74ebd5 0%, #ACB6E5 100%);
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      overflow-x: hidden;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Customer Support Bot</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+body {
+  margin:0;
+  font-family:'Poppins',sans-serif;
+  background:linear-gradient(135deg,#74ebd5 0%,#ACB6E5 100%);
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  overflow-x:hidden;
+}
+/* Navbar */
+.navbar{
+  background:rgba(0,0,0,0.4);
+  color:white;
+  padding:15px 25px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-weight:600;
+  flex-wrap:wrap;
+}
+.navbar .buttons a{
+  color:white;
+  margin-left:12px;
+  text-decoration:none;
+  padding:6px 14px;
+  border:1px solid white;
+  border-radius:25px;
+  transition:0.3s;
+}
+.navbar .buttons a:hover{
+  background:white;
+  color:#333;
+}
+/* Welcome section */
+.welcome-section{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:20px;
+}
+.welcome-message{
+  font-size:36px;
+  font-weight:700;
+  color:#fff;
+  margin-bottom:20px;
+  text-shadow:2px 2px 8px rgba(0,0,0,0.3);
+}
+.welcome-subtext{
+  font-size:18px;
+  font-style:italic;
+  font-weight:300;
+  color:#fff;
+  margin-bottom:8px;
+}
+.last-subtext{margin-bottom:30px;}
+.chatbot-image{
+  width:150px;
+  height:150px;
+  animation:bounce 2s infinite alternate;
+}
+@keyframes bounce{
+  0%{transform:translateY(0) rotate(-5deg);}
+  50%{transform:translateY(-15px) rotate(5deg);}
+  100%{transform:translateY(0) rotate(-5deg);}
+}
 
-    .navbar {
-      background: rgba(0, 0, 0, 0.4);
-      color: white;
-      padding: 15px 25px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-weight: 600;
-      flex-wrap: wrap;
-    }
+/* Chat toggle & widget */
+#chatbot-toggle{
+  position:fixed;
+  bottom:30px;
+  right:30px;
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  background:#3498db;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:1000;
+}
+#chatbot-toggle:hover{background:#2980b9;}
+#chatbot-toggle img{width:60px;height:60px;}
+.chat-widget{
+  position:fixed;
+  bottom:100px;
+  right:30px;
+  width:500px;
+  height:500px;
+  background:white;
+  border-radius:15px;
+  box-shadow:0px 4px 15px rgba(0,0,0,0.25);
+  display:none;
+  flex-direction:column;
+  overflow:hidden;
+  z-index:1000;
+}
+.chat-header{
+  background:linear-gradient(90deg,#3498db,#8e44ad);
+  color:white;
+  padding:12px;
+  font-weight:bold;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.chat-messages{
+  flex:1;
+  padding:10px;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
+}
+.chat-input{
+  display:flex;
+  border-top:1px solid #ddd;
+  align-items:center;
+}
+.chat-input input{
+  flex:1;
+  padding:15px;
+  border:none;
+  outline:none;
+  font-size:18px;
+  border-radius:4px;
+}
+.chat-input button{
+  padding:10px 15px;
+  background:#3498db;
+  color:white;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+  margin-left:5px;
+  border-radius:4px;
+  font-size:16px;
+  height:48px;
+  min-width:80px;
+}
+#voice-btn{
+  background:#1abc9c;
+  color:white;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+  margin-left:5px;
+  border-radius:4px;
+  font-size:16px;
+  transition:background-color 0.3s;
+  height:48px;
+  min-width:80px;
+}
+#voice-btn:hover{background:#16a085;}
+#voice-btn.recording{background:#e74c3c;animation:pulse 1s infinite;}
+@keyframes pulse{
+  0%{box-shadow:0 0 5px #e74c3c;}
+  50%{box-shadow:0 0 15px #e74c3c;}
+  100%{box-shadow:0 0 5px #e74c3c;}
+}
 
-    .navbar .buttons a {
-      color: white;
-      margin-left: 12px;
-      text-decoration: none;
-      padding: 6px 14px;
-      border: 1px solid white;
-      border-radius: 25px;
-      transition: 0.3s;
-    }
+.message {
+  max-width:75%;
+  padding:10px 15px;
+  margin:5px;
+  border-radius:15px;
+  display:inline-block;
+  position:relative;
+}
 
-    .navbar .buttons a:hover {
-      background: white;
-      color: #333;
-    }
+.message.user {
+  background:#2980b9;
+  color:white;
+  align-self:flex-end;
+  border-bottom-right-radius:0;
+}
 
-    .welcome-section {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      padding: 20px;
-    }
+.message.bot {
+  background:#27ae60;
+  color:white;
+  align-self:flex-start;
+  border-bottom-left-radius:0;
+}
 
-    .welcome-message {
-      font-size: 36px;
-      font-weight: 700;
-      color: #fff;
-      margin-bottom: 20px;
-      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
-    }
+.timestamp{
+  font-size:10px;
+  color:#555;
+  margin-top:2px;
+  display:block;
+  text-align:right;
+}
+.date-separator{
+  text-align:center;
+  font-size:12px;
+  margin:10px 0;
+  color:#888;
+}
 
-    .welcome-subtext {
-      font-size: 18px;
-      font-style: italic;
-      font-weight: 300;
-      color: #ffffff;
-      margin-bottom: 8px;
-    }
-
-    .last-subtext {
-      margin-bottom: 30px;
-    }
-
-    .chatbot-image {
-      width: 150px;
-      height: 150px;
-      animation: bounce 2s infinite alternate;
-    }
-
-    @keyframes bounce {
-      0% {
-        transform: translateY(0) rotate(-5deg);
-      }
-      50% {
-        transform: translateY(-15px) rotate(5deg);
-      }
-      100% {
-        transform: translateY(0) rotate(-5deg);
-      }
-    }
-
-    #chatbot-toggle {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: #3498db;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 1000;
-    }
-
-    #chatbot-toggle:hover {
-      background: #2980b9;
-    }
-
-    #chatbot-toggle img {
-      width: 100px;
-      height: 100px;
-    }
-
-    .chat-widget {
-      position: fixed;
-      bottom: 100px;
-      right: 30px;
-      width: 600px;
-      height: 700px;
-      background: white;
-      border-radius: 15px;
-      box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.25);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      z-index: 1000;
-      display: none;
-    }
-
-    .chat-header {
-      background: linear-gradient(90deg, #3498db, #8e44ad);
-      color: white;
-      padding: 12px;
-      font-weight: bold;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .chat-messages {
-      flex: 1;
-      padding: 10px;
-      overflow-y: auto;
-    }
-
-    .chat-input {
-      display: flex;
-      border-top: 1px solid #ddd;
-      align-items: center;
-    }
-
-    .chat-input input {
-      flex: 1;
-      padding: 15px;
-      border: none;
-      outline: none;
-      font-size: 18px;
-    }
-
-    .chat-input input::placeholder {
-      font-size: 18px;
-      color: #999;
-      opacity: 1;
-    }
-
-    .chat-input button {
-      padding: 10px 15px;
-      background: #3498db;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      margin-left: 5px;
-      border-radius: 4px;
-      font-size: 16px;
-      height: 48px;
-      min-width: 80px;
-    }
-
-    #voice-btn {
-      background: #1abc9c;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      margin-left: 5px;
-      border-radius: 4px;
-      font-size: 16px;
-      transition: background-color 0.3s;
-      height: 48px;
-      min-width: 80px;
-    }
-
-    #voice-btn:hover {
-      background: #16a085;
-    }
-
-    #voice-btn.recording {
-      background: #e74c3c;
-      animation: pulse 1s infinite;
-    }
-
-    @keyframes pulse {
-      0% { box-shadow: 0 0 5px #e74c3c; }
-      50% { box-shadow: 0 0 15px #e74c3c; }
-      100% { box-shadow: 0 0 5px #e74c3c; }
-    }
-
-    @media (max-width: 768px) {
-      .navbar {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .navbar .buttons {
-        width: 100%;
-        display: flex;
-        justify-content: space-around;
-        flex-wrap: wrap;
-        margin-top: 10px;
-      }
-
-      .navbar .buttons a {
-        margin: 6px 4px;
-        padding: 8px 16px;
-        font-size: 14px;
-      }
-
-      .welcome-message {
-        font-size: 26px;
-      }
-
-      .welcome-subtext {
-        font-size: 14px;
-      }
-
-      .chatbot-image {
-        width: 100px;
-        height: 100px;
-      }
-
-      #chatbot-toggle {
-        width: 50px;
-        height: 50px;
-      }
-
-      #chatbot-toggle img {
-        width: 24px;
-        height: 24px;
-      }
-
-      .chat-widget {
-        width: 90vw;
-        height: 70vh;
-        bottom: 90px;
-        right: 5vw;
-      }
-    }
-  </style>
+/* Dark mode */
+body.dark-mode .chat-widget{background:#2c3e50; color:white;}
+body.dark-mode .chat-input input{background:#34495e; color:white;}
+body.dark-mode .chat-input button{background:#1abc9c;}
+</style>
 </head>
 <body>
-  <div class="navbar">
-    <div>Customer Support</div>
-    <div class="buttons">
-      <a href="/login">Login</a>
-      <a href="/signup">Signup</a>
-      <a href="/history">History</a>
-    </div>
+<div class="navbar">
+  <div>Customer Support</div>
+  <div class="buttons">
+    <a href="{{ url_for('login') }}">Login</a>
+    <a href="{{ url_for('signup') }}">Signup</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
   </div>
+</div>
 
-  <div class="welcome-section">
-    <div class="welcome-message">Welcome! 👋 How can I help you today?💊</div>
-    <div class="welcome-subtext">Your Health Companion, Available 24/7</div>
-    <div class="welcome-subtext last-subtext">👇🏻Click the chat button at the bottom-right to start chatting!</div>
-    <img src="{{ url_for('static', filename='chatbot.png') }}" alt="Chatbot" class="chatbot-image" />
+<div class="welcome-section">
+ <div class="welcome-message" id="welcome-message"></div>
+  <div class="welcome-subtext">Your Health Companion, Available 24/7</div>
+  <div class="welcome-subtext last-subtext">👇🏻Click the chat button at the bottom-right to start chatting!</div>
+  <img src="{{ url_for('static', filename='chatbot.png') }}" alt="Chatbot" class="chatbot-image" />
+</div>
+
+<!-- Toggle button -->
+<div id="chatbot-toggle">
+  <img src="{{ url_for('static', filename='toggle-icon.png') }}" alt="Chat Toggle" />
+</div>
+
+<!-- Chat widget -->
+<div class="chat-widget" id="chat-widget">
+  <div class="chat-header">MedShop Assistant
+    <button id="dark-toggle" style="margin-left:auto;background:#1abc9c;border:none;color:white;padding:4px 8px;border-radius:5px;cursor:pointer;">🌙</button>
   </div>
-
-  <div id="chatbot-toggle">
-    <img src="{{ url_for('static', filename='toggle-icon.png') }}" alt="Chat Toggle" />
+  <div class="chat-messages" id="chat-messages"></div>
+  <div class="chat-input">
+    <input type="text" id="user-input" placeholder="Type your message...">
+    <button id="voice-btn">🎤</button>
+    <button onclick="sendMessage()">Send</button>
   </div>
+</div>
 
-  <div class="chat-widget" id="chat-widget">
-    <div class="chat-header"><span>MedShop Assistant</span></div>
-    <div class="chat-messages" id="chat-messages"></div>
-    <div class="chat-input">
-      <input type="text" id="user-input" placeholder="Type your message..." />
-      <button id="voice-btn" title="Speak" aria-label="Speak">🎤</button>
-      <button id="send-btn" onclick="sendMessage()">Send</button>
-    </div>
-  </div>
+<script>
+const toggle = document.getElementById('chatbot-toggle');
+const widget = document.getElementById('chat-widget');
+const chatBox = document.getElementById('chat-messages');
+const input = document.getElementById('user-input');
+const voiceBtn = document.getElementById('voice-btn');
+const darkToggle = document.getElementById('dark-toggle');
 
-  <script>
-    const chatbotToggle = document.getElementById('chatbot-toggle');
-    const chatWidget = document.getElementById('chat-widget');
+let femaleVoice = null;
 
-    chatbotToggle.addEventListener('click', () => {
-      chatWidget.style.display = chatWidget.style.display === 'flex' ? 'none' : 'flex';
+// Dark mode toggle
+darkToggle.addEventListener('click', ()=>{ document.body.classList.toggle('dark-mode'); });
+
+// Load voices
+function loadVoices(){
+  const voices = window.speechSynthesis.getVoices();
+  femaleVoice = voices.find(v => v.name.toLowerCase().includes('female')) || voices[0];
+}
+
+// Speak function
+function speak(text){
+  if(!('speechSynthesis' in window)) return;
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = 'en-US';
+  u.rate = 1;
+  u.pitch = 1;
+  if(femaleVoice) u.voice = femaleVoice;
+  window.speechSynthesis.speak(u);
+}
+function renderMessage(sender, msg, timestamp){
+  let cls = sender==='You'?'user':'bot';
+  let msgDate;
+  
+  if(timestamp instanceof Date){
+      msgDate = timestamp;
+  } else {
+      msgDate = new Date(timestamp); // parse ISO string
+  }
+
+  let ts = msgDate.toLocaleTimeString([], {hour:'2-digit', minute:'2-digit', hour12:true});
+  chatBox.innerHTML += `<div class="message ${cls}"><div>${msg}</div><span class="timestamp">${ts}</span></div>`;
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+
+// Load chat history
+async function loadHistory(){
+  try{
+    const res = await fetch('/history_json');
+    if(!res.ok) return;
+    const data = await res.json();
+    let lastDate='';
+
+    data.forEach(msg => {
+      let msgDate = new Date(msg.timestamp);
+      let dateStr = msgDate.toLocaleDateString([], {year:'numeric', month:'short', day:'numeric'});
+      if(dateStr !== lastDate){
+        chatBox.innerHTML += `<div class="date-separator">${dateStr}</div>`;
+        lastDate = dateStr;
+      }
+
+      renderMessage(
+        msg.sender==='user'?'You':'Bot',
+        msg.message,
+        msgDate
+      );
     });
+  }catch(e){console.error(e);}
+}
+loadHistory();
 
-    const chatBox = document.getElementById('chat-messages');
-    const userInput = document.getElementById('user-input');
-    const sendBtn = document.getElementById('send-btn');
-    const voiceBtn = document.getElementById('voice-btn');
+async function sendMessage(){
+  const msg = input.value.trim();
+  if(!msg) return;
+  input.value='';  // clear input
 
-    function renderMessage(sender, message) {
-      chatBox.innerHTML += `<div><b>${sender === 'user' ? 'You' : 'Bot'}:</b> ${message}</div>`;
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
+  const res = await fetch('/get',{
+    method:'POST',
+    headers:{'Content-Type':'application/x-www-form-urlencoded'},
+    body:new URLSearchParams({msg})
+  });
+  const data = await res.json();
 
-    async function loadHistory() {
-      try {
-        const res = await fetch('/history');
-        if (!res.ok) return;
-        const history = await res.json();
-        history.forEach((msg) => renderMessage(msg.sender, msg.message));
-      } catch (err) {
-        console.error('Failed to load chat history:', err);
-      }
-    }
+  // render user message with user timestamp
+  renderMessage('You', msg, data.user_timestamp);
 
-    loadHistory();
+  // render bot reply with bot timestamp
+  renderMessage('Bot', data.bot_msg, data.bot_timestamp);
 
-    async function sendMessage() {
-      const message = userInput.value.trim();
-      if (!message) return;
+  speak(data.bot_msg);
+}
 
-      renderMessage('user', message);
-      userInput.value = '';
 
-      try {
-        const res = await fetch('/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message }),
-        });
-        const data = await res.json();
-        renderMessage('bot', data.response);
-        speakResponse(data.response);
-      } catch (err) {
-        console.error('Failed to send message:', err);
-      }
-    }
 
-    let recognition;
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognition = new SpeechRecognition();
-      recognition.lang = 'en-US';
-      recognition.interimResults = false;
-      recognition.maxAlternatives = 1;
+// Toggle chat widget
+toggle.addEventListener('click', (e)=>{ e.stopPropagation(); widget.style.display = widget.style.display==='flex'?'none':'flex'; });
+widget.addEventListener('click',(e)=>e.stopPropagation());
 
-      recognition.addEventListener('start', () => {
-        voiceBtn.classList.add('recording');
-        voiceBtn.title = 'Listening... Click to stop.';
-      });
+// Voice recognition
+let recognition;
+if('webkitSpeechRecognition' in window || 'SpeechRecognition' in window){
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SpeechRecognition();
+  recognition.lang = 'en-US';
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 1;
+  recognition.addEventListener('start', ()=>{ voiceBtn.classList.add('recording'); voiceBtn.title='Listening...'; });
+  recognition.addEventListener('end', ()=>{ voiceBtn.classList.remove('recording'); voiceBtn.title='Speak'; });
+  recognition.addEventListener('result', event => { input.value = event.results[0][0].transcript; sendMessage(); });
+}else{ voiceBtn.disabled=true; voiceBtn.title="Speech Recognition not supported"; }
+voiceBtn.addEventListener('click', ()=>{ if(!recognition) return; if(voiceBtn.classList.contains('recording')) recognition.stop(); else recognition.start(); });
 
-      recognition.addEventListener('end', () => {
-        voiceBtn.classList.remove('recording');
-        voiceBtn.title = 'Speak';
-      });
+// Welcome message
+const welcomeEl = document.getElementById('welcome-message');
+const welcomeText = "{{ welcome_message|safe }}";  // Flask variable
+welcomeEl.textContent = welcomeText;
 
-      recognition.addEventListener('result', (event) => {
-        const transcript = event.results[0][0].transcript;
-        userInput.value = transcript;
-        sendBtn.click();
-      });
+let welcomeSpoken = false;  // ✅ Prevent repeats
+
+function loadVoicesAndSpeak() {
+    if (welcomeSpoken) return;  // stop extra repeats
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length > 0) {
+        femaleVoice = voices.find(v => v.name.toLowerCase().includes('female')) || voices[0];
+        speak(welcomeText);
+        welcomeSpoken = true; // ✅ mark done
     } else {
-      voiceBtn.disabled = true;
-      voiceBtn.title = "Speech Recognition not supported in this browser";
+        setTimeout(loadVoicesAndSpeak, 100);
     }
-
-    voiceBtn.addEventListener('click', () => {
-      if (!recognition) return;
-      if (voiceBtn.classList.contains('recording')) {
-        recognition.stop();
-      } else {
-        recognition.start();
-      }
-    });
-
-    function speakResponse(text) {
-      if (!('speechSynthesis' in window)) return;
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = 'en-US';
-      utterance.rate = 1;
-      utterance.pitch = 1;
-      window.speechSynthesis.speak(utterance);
-    }
-  </script>
+}
+let voiceEventHandled = false;
+window.speechSynthesis.onvoiceschanged = () => {
+    if (voiceEventHandled || welcomeSpoken) return;
+    voiceEventHandled = true;
+    loadVoicesAndSpeak();
+};
+</script>
 </body>
 </html>
